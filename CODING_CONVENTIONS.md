@@ -54,7 +54,23 @@ Every new project must begin in a **planning mode**.
   * **Define Scope**: Create and refine a specification or task list based on the human's input.  
   * **Architectural Discussion**: Discuss and decide on key architectural aspects, including user experience, cloud resources, cost, security, and scalability.
 
-### **2.2. Project Scaffolding**
+### **2.2. Planning Artifacts**
+
+The planning phase, whether native or manual, must produce the following artifacts. These documents are also expected to be generated when onboarding an existing project that lacks them.
+
+1.  **PRFAQ Document**: A document inspired by Amazon's internal process for new product development, to be located at `docs/PRFAQ.md`. It consists of:
+    *   **Press Release (PR)**: A one-page narrative describing the product/feature from the customer's perspective. It announces the finished product, highlighting the customer problem and how the new functionality solves it.
+    *   **Frequently Asked Questions (FAQ)**: A list of anticipated questions from both customers and internal stakeholders, along with clear, concise answers. This helps to think through potential challenges, dependencies, and edge cases.
+
+2.  **One-Page Tech Spec**: A concise technical document that outlines the proposed solution, to be located at `docs/TECH_SPEC.md`. It should include:
+    *   **System Actors**: A list of all users or systems that will interact with the new application.
+    *   **User Stories & Flows**: A description of the key user journeys and workflows. This can be a list of user stories (e.g., "As a [user type], I want to [action] so that [benefit]") and diagrams or descriptions of the flows.
+    *   High-level architecture diagram.
+    *   Data models.
+    *   API endpoints (if applicable).
+    *   Key technical decisions and trade-offs.
+
+### **2.3. Project Scaffolding**
 
 Upon initialization, the agent must create the following structure. The `.gitignore` file should always include the agent's workspace directory in case it is used.
 
@@ -68,7 +84,9 @@ Upon initialization, the agent must create the following structure. The `.gitign
 ├── .github/  
 │   └── workflows/      \# CI/CD pipelines  
 ├── docs/  
-│   └── adr/            \# Architectural Decision Records  
+│   ├── adr/            \# Architectural Decision Records
+│   ├── PRFAQ.md
+│   └── TECH_SPEC.md
 ├── iac/                \# Infrastructure as Code (OpenTofu)  
 ├── scripts/            \# Build, deploy, test, lint scripts  
 ├── src/                \# Source code  
