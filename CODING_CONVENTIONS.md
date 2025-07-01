@@ -103,10 +103,14 @@ Upon initialization, the agent must create the following structure. The `.gitign
     *   **Verify the existence and stability of any proposed third-party libraries.** This includes a brief check of the library's documentation, latest version, and community adoption to avoid relying on deprecated or non-existent tools.
     *   State the final, validated language and key libraries for the project. This must be approved by the human operator before proceeding.
 
-### **2.5. Pre-Implementation Review**
-*   After the plan and technology stack have been approved but before writing the first line of implementation code, the agent must pause and ask for a final review.
-*   The agent should state its understanding of the immediate task and explicitly ask if it has any knowledge gaps that need to be addressed. For example: **"My understanding is that I need to build [feature X] using [library Y]. I have a clear path for the main logic, but I am still uncertain about the best way to handle [specific edge case]. Can we clarify this before I begin?"**
-*   This step ensures that any remaining ambiguities are resolved before they lead to rework.
+### **2.5. Pre-Implementation Review & ADR Checkpoint**
+*   After the plan and technology stack have been approved but before writing the first line of implementation code, the agent must pause for a final review and ADR checkpoint.
+*   **Step 1: ADR Creation**: The agent must identify all significant architectural decisions made during the planning phase and propose to create ADRs for them.
+    *   Example prompt: *"As part of our plan, we have decided on a Monolithic architecture using Python with FastAPI. This is a significant architectural decision. Shall I create an ADR to document this before we begin coding?"*
+    *   The agent may not proceed until the human operator has approved the creation of these ADRs.
+*   **Step 2: Knowledge Gap Check**: The agent should state its understanding of the immediate task and explicitly ask if it has any knowledge gaps that need to be addressed.
+    *   Example prompt: *"My understanding is that I need to build [feature X] using [library Y]. I have a clear path for the main logic, but I am still uncertain about the best way to handle [specific edge case]. Can we clarify this before I begin?"*
+*   This two-step process ensures that decisions are documented and any remaining ambiguities are resolved before they lead to rework.
 
 ---
 
@@ -123,11 +127,20 @@ The `README.md` is for an external reader. It must clearly and concisely explain
 
 ### **3.2. Architectural Decision Records (ADRs)**
 
-Significant architectural decisions must be documented as ADRs.
+Significant architectural decisions must be documented as ADRs. The agent is responsible for proposing and creating them at the `Pre-Implementation Review` checkpoint (Section 2.5) and for updating them throughout the project's lifecycle.
 
-* **Location**: `docs/adr/`  
-* **Tooling**: Use `adr-tools`.  
-* The agent is responsible for **proposing and updating ADRs** as the project evolves.
+*   **Location**: `docs/adr/`
+*   **Tooling**: Use `adr-tools`.
+*   **Mandatory ADRs**: The following decisions are considered significant and **must** be documented with an ADR, both at creation and if they are changed later:
+    *   Choice of primary architecture (e.g., Monolith vs. Microservices, Client-Server split).
+    *   Selection or change of the main programming language or framework (e.g., switching from Python to Go).
+    *   Choice of database technology.
+    *   Integration of any core, third-party service (e.g., message bus, search index, payment gateway).
+    *   Dropping a previously approved library or technology.
+    *   The primary API design paradigm (e.g., REST, GraphQL).
+*   **ADR Invalidation Protocol**: If the agent discovers that a decision documented in an existing ADR is no longer viable or optimal, it must:
+    1.  **Halt & Report**: Immediately stop the current implementation task and report the conflict to the human operator. The agent may not implement a workaround that deviates from the documented architecture without approval.
+    2.  **Propose & Supersede**: After discussing with the human, the agent must propose a new ADR to document the new decision. This new ADR **must** explicitly supersede the old one, linking to it and explaining the context and reasoning for the change. This creates a clear, auditable history of architectural evolution.
 
 ---
 
