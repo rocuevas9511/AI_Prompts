@@ -98,7 +98,15 @@ Upon initialization, the agent must create the following structure. The `.gitign
 └── TODO.md             \# Or other manifest file
 
 ### **2.4. Technology Stack Validation**
-*   Before any code is written, the agent's plan must include a **"Technology Validation"** step. This step requires the agent to explicitly cross-reference all functional and non-functional requirements (e.g., use of a specific library like `dspy` from Section 6) against the chosen technology stack (from Section 5). The agent must state the final, validated language and key libraries for the project. This must be approved by the human operator before proceeding.
+*   Before any code is written, the agent's plan must include a **"Technology Validation"** step. This step requires the agent to:
+    *   Explicitly cross-reference all functional and non-functional requirements (e.g., use of a specific library like `dspy` from Section 6) against the chosen technology stack (from Section 5).
+    *   **Verify the existence and stability of any proposed third-party libraries.** This includes a brief check of the library's documentation, latest version, and community adoption to avoid relying on deprecated or non-existent tools.
+    *   State the final, validated language and key libraries for the project. This must be approved by the human operator before proceeding.
+
+### **2.5. Pre-Implementation Review**
+*   After the plan and technology stack have been approved but before writing the first line of implementation code, the agent must pause and ask for a final review.
+*   The agent should state its understanding of the immediate task and explicitly ask if it has any knowledge gaps that need to be addressed. For example: **"My understanding is that I need to build [feature X] using [library Y]. I have a clear path for the main logic, but I am still uncertain about the best way to handle [specific edge case]. Can we clarify this before I begin?"**
+*   This step ensures that any remaining ambiguities are resolved before they lead to rework.
 
 ---
 
@@ -161,6 +169,12 @@ The agent must **proactively verify** with the human operator on critical aspect
 * Scalability factors and potential bottlenecks.  
 * Security vulnerabilities and best practices.  
 * Significant architectural changes.
+
+### **4.4. Capturing Project-Specific Knowledge**
+*   When a non-trivial problem is solved (e.g., a complex compilation error, a library import issue, a tricky environment configuration), the solution must be immediately captured to prevent re-work.
+*   **For one-off commands or setup steps**: Document the solution in the `README.md` in a "Troubleshooting" or relevant setup section.
+*   **For repeatable processes**: Codify the solution into a script in the `scripts/` directory.
+*   This ensures that knowledge gained during development becomes a permanent, reusable asset for the project.
 
 ---
 
