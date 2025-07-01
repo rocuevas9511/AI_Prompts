@@ -68,6 +68,7 @@ The planning phase, whether native or manual, must produce the following artifac
     *   High-level architecture diagram.
     *   Data models.
     *   API endpoints (if applicable).
+    *   **Target Output Schematic**: For projects that generate a structured text or UI output (e.g., a report or a web page), the `TECH_SPEC.md` should include a "Target Output Schematic". This should be a literal, formatted block (e.g., a Markdown blockquote) that shows the exact desired structure of the output, using placeholders for dynamic content. This is more explicit than user stories alone.
     *   Key technical decisions and trade-offs.
 
 ### **2.3. Project Scaffolding**
@@ -95,6 +96,9 @@ Upon initialization, the agent must create the following structure. The `.gitign
 ├── Dockerfile  
 ├── README.md  
 └── TODO.md             \# Or other manifest file
+
+### **2.4. Technology Stack Validation**
+*   Before any code is written, the agent's plan must include a **"Technology Validation"** step. This step requires the agent to explicitly cross-reference all functional and non-functional requirements (e.g., use of a specific library like `dspy` from Section 6) against the chosen technology stack (from Section 5). The agent must state the final, validated language and key libraries for the project. This must be approved by the human operator before proceeding.
 
 ---
 
@@ -142,7 +146,7 @@ The following patterns should be considered during the planning phase as strong 
 
 * **Primary Backend Consideration**:  
   * **Monolithic Architecture**: A single, unified codebase and application. Simpler to develop, test, and deploy initially. A good starting point for MVPs and smaller applications.  
-  * **Microservices Architecture**: Structures an application as a collection of small, independently deployable services. Excellent for complex systems requiring high scalability and team autonomy, but introduces operational overhead.  
+  * **Microservices Architecture**: Structures an-application as a collection of small, independently deployable services. Excellent for complex systems requiring high scalability and team autonomy, but introduces operational overhead.  
 * **Other Relevant Patterns**:  
   * **Event-Driven Architecture (EDA)**: Components communicate asynchronously via events. This pattern enables highly scalable, decoupled systems that are resilient to failures. Ideal for applications that need to react to real-time changes.  
   * **Layered (N-tier) Architecture**: Separates components into horizontal layers (e.g., Presentation, Business, Persistence, Database). It's a traditional, well-understood pattern good for many applications.  
@@ -167,6 +171,16 @@ The agent must **proactively verify** with the human operator on critical aspect
   * **Ruby Web Framework**: Default to **Ruby on Rails**.  
 * **Frontend**: **JavaScript** with the **React** framework. The agent is expected to handle all aspects of frontend development, including HTML and CSS.  
 * **Containerization**: **Docker** is the standard for containerizing applications. A `Dockerfile` must be included.
+
+### **5.1. Project Setup & Environment Management**
+*   **Initialization**: For any chosen language, the first step after scaffolding is to initialize the project using its standard dependency management system. This ensures the project is self-contained and reproducible.
+    *   **Python**: Create a virtual environment (e.g., `python3 -m venv venv`) and activate it. All subsequent `pip` and `python` commands must be run from within this environment.
+    *   **Go**: Initialize a module (e.g., `go mod init <module-path>`) and manage dependencies with `go mod tidy`.
+    *   **JavaScript/Node.js**: Initialize a project with `npm init -y` and manage packages with `npm install`.
+*   **Ignoring Artifacts**: Language-specific environment and dependency directories (e.g., `venv/`, `node_modules/`) and build artifacts must be added to the `.gitignore` file.
+*   **Documentation & Automation**: The specific setup and installation steps must be:
+    *   Clearly documented in the `README.md` under a "Getting Started" or "Build & Run" section.
+    *   Automated via a setup script in the `scripts/` directory (e.g., `scripts/setup.sh`).
 
 ---
 
@@ -203,6 +217,7 @@ All applications must include basic capabilities for logging and emitting metric
 
 The `scripts/` directory will contain **Bash scripts** for all common development and operational tasks. These scripts should be executable and serve as the single point of entry for automation.
 
+* `./scripts/setup.sh`: To set up the development environment and install dependencies.
 * `./scripts/lint.sh`: To run code linters.  
 * `./scripts/build.sh`: To compile or build the application.  
 * `./scripts/test-local.sh`: To run all tests locally.  
@@ -224,4 +239,15 @@ The `scripts/` directory will contain **Bash scripts** for all common developmen
   4. Review and merge into `main`.  
   5. Deploy `main`.  
 * **Commit Messages**: Use **Conventional Commits**. While not strictly enforced by tooling, the agent should follow this convention. Tools like `commitizen/cz-cli` are recommended. Semantic Versioning should be used for tagging and releases.
+
+---
+
+## **11\. End-of-Session Reflection**
+
+To foster continuous improvement in our collaborative workflow, the human operator may trigger a reflection protocol at the end of a work session.
+
+*   **Trigger**: The human can initiate this with a prompt like, "Let's reflect on our session," or a similar request.
+*   **Agent's Task**: Upon receiving the trigger, the agent should provide a structured reflection. A default starting point for this reflection is:
+    > "Reflecting on our interactions and the project's progress, what can be added to the `CODING_CONVENTIONS.md` to improve our workflow next time? Based on your reflection, please also comment on the effectiveness of the coding conventions and my performance as a human guide throughout this session."
+*   **Goal**: The objective is to identify friction points, refine rules, and make the agent-human collaboration more efficient and effective over time. The output of this reflection can be used to propose concrete changes to this document.
 
