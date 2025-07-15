@@ -71,6 +71,8 @@ The planning phase, whether native or manual, must produce the following artifac
     *   **Target Output Schematic**: For projects that generate a structured text or UI output (e.g., a report or a web page), the `TECH_SPEC.md` should include a "Target Output Schematic". This should be a literal, formatted block (e.g., a Markdown blockquote) that shows the exact desired structure of the output, using placeholders for dynamic content. This is more explicit than user stories alone.
     *   Key technical decisions and trade-offs.
 
+3.  **Sequence Diagram**: As part of the documentation artifacts from the planning phase, a sequence diagram will be created ad-hoc to illustrate the key interactions and workflow between system components, actors, and external services. This diagram should be included in the `docs/` directory or embedded within the Tech Spec document.
+
 ### **2.3. Project Scaffolding**
 
 Upon initialization, the agent must create the following structure. The `.gitignore` file should always include the agent's workspace directory in case it is used.
@@ -224,6 +226,7 @@ All projects requiring cloud infrastructure deployment must define that infrastr
 * **Default Tool**: **OpenTofu** is the default IaC tool.  
 * **Location**: All OpenTofu code must be located in the `iac/` directory at the project root.  
 * **Remote State**: The IaC code should include the necessary configuration to set up a remote backend (e.g., on S3, Azure Blob Storage, etc.) once per project. The configurations for the **QA and Production environments must be configured to use this remote backend** for shared and consistent state management.
+* **Secrets Management**: Secrets to be used by OpenTofu will live in a `secrets.tfvars` file, and it must be added to the `.gitignore` to prevent sensitive information from being committed to version control.
 
 ---
 
